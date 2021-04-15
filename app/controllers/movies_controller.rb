@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
       end
 
       format.html do
-        render({ :template => "movies/index.html.erb" })
+        render template: "movies/index.html.erb"
       end
     end
   end
@@ -28,7 +28,7 @@ class MoviesController < ApplicationController
 
     @the_movie = matching_movies.first
 
-    render({ :template => "movies/show.html.erb" })
+    render template: "movies/show.html.erb"
   end
 
   def create
@@ -51,7 +51,7 @@ class MoviesController < ApplicationController
 
     @the_movie = matching_movies.first
 
-    render({ :template => "movies/edit.html.erb" })
+    render template: "movies/edit.html.erb" 
   end
 
   def update
@@ -63,18 +63,18 @@ class MoviesController < ApplicationController
 
     if the_movie.valid?
       the_movie.save
-      redirect_to("/movies/#{the_movie.id}", { :notice => "Movie updated successfully."} )
+      redirect_to movie_path(the_movie.id), notice: "Movie updated successfully."
     else
-      redirect_to("/movies/#{the_movie.id}", { :alert => "Movie failed to update successfully." })
+      redirect_to movie_path(the_movie.id), alert: "Movie failed to update successfully." 
     end
   end
 
   def destroy
     the_id = params.fetch(:id)
-    the_movie = Movie.where({ :id => the_id }).first
+    the_movie = Movie.where( :id => the_id ).first
 
     the_movie.destroy
 
-    redirect_to("/movies", { :notice => "Movie deleted successfully."} )
+    redirect_to movies_path,  notice: "Movie deleted successfully."
   end
 end
