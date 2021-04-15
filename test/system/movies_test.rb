@@ -75,7 +75,7 @@ class MoviesTest < ApplicationSystemTestCase
     click_on "Show details", match: :first
     click_on "Delete movie"
 
-    assert_text "Movie deleted successfully"
+    assert_text "Movie deleted successfully."
     
     ending_movie_count = Movie.count
     assert_equal original_movie_count - 1, ending_movie_count
