@@ -20,9 +20,9 @@ class MoviesController < ApplicationController
   end
 
   def create
-    @movie = Movie.new
-    @movie.title = params.fetch(:movie).fetch(:title)
-    @movie.description = params.fetch(:movie).fetch(:description)
+    movie_attributes = params.require(:movie).permit(:title, :description)
+
+    @movie = Movie.new(movie_attributes)
 
     if @movie.valid?
       @movie.save
@@ -33,19 +33,15 @@ class MoviesController < ApplicationController
   end
 
   def edit
-    id = params.fetch(:id)
-
-    matching_movies = Movie.where( id: id )
-
-    @movie = matching_movies.first
+    @movie = Movie.find(params.fetch(:id))
   end
 
   def update
-    id = params.fetch(:id)
-    movie = Movie.where( id: id ).first
+    movie_attributes = params.require(:movie).permit(:title, :description)
 
-    movie.title = params.fetch(:title)
-    movie.description = params.fetch(:description)
+    movie = Movie.find(params.fetch(:id))
+
+    movie.update(movie_attributes)
 
     if movie.valid?
       movie.save
@@ -56,9 +52,8 @@ class MoviesController < ApplicationController
   end
 
   def destroy
-    id = params.fetch(:id)
-    movie = Movie.where( id: id ).first
-
+    movie = Movie.find(params.fetch(:id))
+ 
     movie.destroy
 
     redirect_to movies_path,  notice: "Movie deleted successfully."
